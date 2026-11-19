@@ -1,0 +1,250 @@
+{
+  "data": {
+    "customers": 5000,
+    "transactions": 736351,
+    "customer_months": 30000,
+    "suspicious_customer_months": 170,
+    "prevalence": 0.0057,
+    "train_positives": 111,
+    "test_positives": 59
+  },
+  "assumptions": {
+    "capacity_per_month": 200,
+    "minutes_per_alert": 45,
+    "ml_slots_option_C": 60
+  },
+  "rules_test_period": {
+    "alerts_per_month": 332.5,
+    "precision": 0.032,
+    "recall_if_all_reviewed": 0.356,
+    "per_rule": [
+      {
+        "rule": "R1_large_cash",
+        "description": "Single cash deposit of EUR 10,000 or more",
+        "alerts_per_month": 103.5,
+        "true_positives": 0,
+        "precision": 0.0,
+        "top_false_positive_profile": "cash_intensive_business"
+      },
+      {
+        "rule": "R2_structuring",
+        "description": "3+ cash deposits between EUR 8,000 and 10,000 in one month",
+        "alerts_per_month": 34.0,
+        "true_positives": 3,
+        "precision": 0.044,
+        "top_false_positive_profile": "cash_intensive_business"
+      },
+      {
+        "rule": "R3_high_risk_country",
+        "description": "EUR 5,000+ sent to high-risk jurisdictions in one month",
+        "alerts_per_month": 174.5,
+        "true_positives": 17,
+        "precision": 0.049,
+        "top_false_positive_profile": "import_export"
+      },
+      {
+        "rule": "R4_rapid_movement",
+        "description": "EUR 10,000+ inflow of which 80%+ leaves again within 2 days",
+        "alerts_per_month": 41.0,
+        "true_positives": 6,
+        "precision": 0.073,
+        "top_false_positive_profile": "savings_sweeper"
+      }
+    ]
+  },
+  "model_metrics_test": {
+    "score_gbm": {
+      "pr_auc": 0.838,
+      "roc_auc": 0.993
+    },
+    "score_logreg": {
+      "pr_auc": 0.614,
+      "roc_auc": 0.986
+    }
+  },
+  "options": [
+    {
+      "option": "A",
+      "label": "A. Status quo (rules, FIFO)",
+      "alerts_generated_per_month": 332.5,
+      "alerts_reviewed_per_month": 200.0,
+      "backlog_per_month": 132.5,
+      "suspicious_cases_caught": 12.4,
+      "recall": 0.209,
+      "precision_of_reviewed": 0.031,
+      "investigator_hours_per_month": 150.0,
+      "recall_ci_95": [
+        0.169,
+        0.379
+      ]
+    },
+    {
+      "option": "B",
+      "label": "B. Rules + ML prioritisation",
+      "alerts_generated_per_month": 332.5,
+      "alerts_reviewed_per_month": 200.0,
+      "backlog_per_month": 132.5,
+      "suspicious_cases_caught": 21.0,
+      "recall": 0.356,
+      "precision_of_reviewed": 0.052,
+      "investigator_hours_per_month": 150.0,
+      "recall_ci_95": [
+        0.243,
+        0.471
+      ]
+    },
+    {
+      "option": "C",
+      "label": "C. B + capped ML scenario",
+      "alerts_generated_per_month": 392.5,
+      "alerts_reviewed_per_month": 200.0,
+      "backlog_per_month": 192.5,
+      "suspicious_cases_caught": 53.0,
+      "recall": 0.898,
+      "precision_of_reviewed": 0.133,
+      "investigator_hours_per_month": 150.0,
+      "recall_ci_95": [
+        0.816,
+        0.965
+      ]
+    },
+    {
+      "option": "D",
+      "label": "D. ML replaces rules",
+      "alerts_generated_per_month": 200.0,
+      "alerts_reviewed_per_month": 200.0,
+      "backlog_per_month": 0.0,
+      "suspicious_cases_caught": 55.0,
+      "recall": 0.932,
+      "precision_of_reviewed": 0.138,
+      "investigator_hours_per_month": 150.0,
+      "recall_ci_95": [
+        0.86,
+        0.986
+      ]
+    }
+  ],
+  "typology_detection": [
+    {
+      "typology": "high_risk_layering",
+      "cases": 18,
+      "rules_all_alerts_reviewed": 0.667,
+      "option_C": 1.0,
+      "option_D": 1.0
+    },
+    {
+      "typology": "money_mule",
+      "cases": 27,
+      "rules_all_alerts_reviewed": 0.148,
+      "option_C": 0.815,
+      "option_D": 0.852
+    },
+    {
+      "typology": "structuring",
+      "cases": 14,
+      "rules_all_alerts_reviewed": 0.357,
+      "option_C": 0.929,
+      "option_D": 1.0
+    }
+  ],
+  "ml_slots_sensitivity": [
+    {
+      "ml_slots": 0,
+      "recall": 0.356
+    },
+    {
+      "ml_slots": 20,
+      "recall": 0.847
+    },
+    {
+      "ml_slots": 40,
+      "recall": 0.864
+    },
+    {
+      "ml_slots": 60,
+      "recall": 0.898
+    },
+    {
+      "ml_slots": 80,
+      "recall": 0.915
+    },
+    {
+      "ml_slots": 100,
+      "recall": 0.932
+    },
+    {
+      "ml_slots": 120,
+      "recall": 0.932
+    },
+    {
+      "ml_slots": 140,
+      "recall": 0.932
+    },
+    {
+      "ml_slots": 160,
+      "recall": 0.932
+    }
+  ],
+  "feature_importance_top10": [
+    {
+      "feature": "fast_out_share",
+      "importance": 0.5594,
+      "std": 0.0531,
+      "description": "Share of inbound money sent out again within 2 days"
+    },
+    {
+      "feature": "hr_out_sum",
+      "importance": 0.3798,
+      "std": 0.0266,
+      "description": "Amount sent to high-risk jurisdictions (EUR)"
+    },
+    {
+      "feature": "cash_dep_sum",
+      "importance": 0.2392,
+      "std": 0.0096,
+      "description": "Total cash deposited (EUR)"
+    },
+    {
+      "feature": "total_in",
+      "importance": 0.1314,
+      "std": 0.0294,
+      "description": "Total inbound amount (EUR)"
+    },
+    {
+      "feature": "out_in_ratio",
+      "importance": 0.1121,
+      "std": 0.0273,
+      "description": "Outbound / inbound amount (capped at 3)"
+    },
+    {
+      "feature": "n_distinct_senders",
+      "importance": 0.0949,
+      "std": 0.0217,
+      "description": "Distinct counterparties sending money in"
+    },
+    {
+      "feature": "n_tx",
+      "importance": 0.0397,
+      "std": 0.0058,
+      "description": "Number of transactions in the month"
+    },
+    {
+      "feature": "in_vs_own_history",
+      "importance": 0.0323,
+      "std": 0.0034,
+      "description": "Inbound amount vs the customer's own average of previous months"
+    },
+    {
+      "feature": "is_sme",
+      "importance": 0.0249,
+      "std": 0.0085,
+      "description": "Customer is an SME (vs retail)"
+    },
+    {
+      "feature": "kyc_risk_high",
+      "importance": 0.019,
+      "std": 0.0051,
+      "description": "KYC risk rating is 'high'"
+    }
+  ]
+}
