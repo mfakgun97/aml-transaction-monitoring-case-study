@@ -1,7 +1,7 @@
 # 03 · Decision proposal: ML-assisted alert prioritisation and a capped ML scenario
 
 | | |
-|---|---|
+
 
 | **Status** | For decision |
 
