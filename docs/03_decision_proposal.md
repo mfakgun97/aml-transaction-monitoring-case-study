@@ -1,8 +1,8 @@
 # 03 · Decision proposal: ML-assisted alert prioritisation and a capped ML scenario
-
 | | |
-
-
+|---|---|
+| **Decision needed from** | Product owner Transaction Monitoring, Head of Investigations, Compliance (2nd line), Model Risk Management |
+| **Prepared by** | Analytics translator |
 | **Status** | For decision |
 
 ## 1. Summary (the 30-second version)
